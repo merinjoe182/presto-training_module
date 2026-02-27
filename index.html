@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRESTO Training – Early Card Conversion communications Toolkit</title>
+<title>PRESTO Training Module – Frontline Staff</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 /* ════════════════════════════════════════
@@ -63,18 +63,152 @@ body {
 }
 
 /* ════════════════════════════════════════
-   PRINT STYLES
+   PRINT STYLES — full document PDF output
 ════════════════════════════════════════ */
 @media print {
-  .progress-wrap, .chapter-nav, .nav-buttons, .theme-toggle-wrap,
-  .print-btn-wrap, .quiz-block, .reveal-btn, .hero-stats { display: none !important; }
-  .section { display: block !important; page-break-after: always; }
-  body { background: #fff !important; color: #000 !important; }
-  .bubble { border: 1px solid #ccc !important; background: #f9f9f9 !important; color: #000 !important; }
-  .hero { background: #f0f0f0 !important; }
-  .hero h1 { -webkit-text-fill-color: #000 !important; }
-  .info-box { border: 1px solid #ccc !important; background: #f5f5f5 !important; }
-  .avatar { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  /* Hide interactive chrome */
+  .topbar, .progress-wrap, .chapter-nav, .nav-buttons,
+  .print-btn-wrap, .reveal-btn, .particle { display: none !important; }
+
+  /* Show ALL sections, not just active */
+  .section { display: block !important; animation: none !important; }
+  .section + .section { page-break-before: always; }
+
+  /* Show all messages immediately — no animation states needed */
+  .msg { opacity: 1 !important; transform: none !important; }
+  .bubble { animation: none !important; transform: none !important; }
+  /* Force visible class behaviour for print */
+  .msg:not(.visible) { opacity: 1 !important; transform: none !important; }
+
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+    font-size: 13px !important;
+  }
+
+  .hero {
+    background: #e8f5ef !important;
+    padding: 32px 24px 24px !important;
+  }
+  .hero h1 {
+    -webkit-text-fill-color: #0d3d2a !important;
+    color: #0d3d2a !important;
+    font-size: 32px !important;
+  }
+  .hero p { color: #3a6654 !important; }
+  .hero-stat .num { color: #00a878 !important; }
+  .hero-stat .label { color: #3a6654 !important; }
+  .hero-badge {
+    background: rgba(0,168,120,0.12) !important;
+    border-color: rgba(0,168,120,0.4) !important;
+    color: #00a878 !important;
+  }
+
+  .section-header { border-bottom: 2px solid #00c896 !important; }
+  .section-icon { background: rgba(0,200,150,0.1) !important; border-color: rgba(0,200,150,0.3) !important; }
+  .section-header h2 { color: #0d3d2a !important; }
+  .section-header p { color: #3a6654 !important; }
+
+  .info-box {
+    background: #f0faf6 !important;
+    border: 1px solid #b2dece !important;
+    color: #111 !important;
+  }
+  .info-box strong { color: #00a878 !important; }
+  .info-box.yellow { border-left-color: #e5a800 !important; background: #fffbec !important; }
+  .info-box.yellow strong { color: #b37f00 !important; }
+  .info-box.red { border-left-color: #cc3333 !important; background: #fff5f5 !important; }
+  .info-box.red strong { color: #cc3333 !important; }
+
+  .chat-label { color: #3a6654 !important; }
+  .chat-label::before, .chat-label::after { background: #b2dece !important; }
+
+  /* Conversation bubbles */
+  .conversation { gap: 14px !important; }
+  .msg.agent .bubble {
+    background: #d4f0e8 !important;
+    border: 1px solid #a0d9c8 !important;
+    color: #0d3d2a !important;
+  }
+  .msg.customer .bubble {
+    background: #dde4ff !important;
+    border: 1px solid #b0bcf0 !important;
+    color: #1a1e4a !important;
+  }
+  .bubble .highlight { background: rgba(0,168,120,0.15) !important; color: #00875a !important; }
+  .bubble .highlight.yellow { background: rgba(229,168,0,0.15) !important; color: #8a6000 !important; }
+  .bubble .highlight.red { background: rgba(204,51,51,0.12) !important; color: #cc3333 !important; }
+
+  .avatar-name-tag { color: #3a6654 !important; }
+  .msg.agent .avatar-name-tag { color: #00875a !important; }
+  .msg.customer .avatar-name-tag { color: #3b5bdb !important; }
+
+  /* Tip cards */
+  .tip-card {
+    background: #f0faf6 !important;
+    border: 1px solid #b2dece !important;
+    break-inside: avoid;
+  }
+  .tip-card h4 { color: #00875a !important; }
+  .tip-card p { color: #3a6654 !important; }
+
+  /* Timeline */
+  .timeline::before { background: #00c896 !important; }
+  .tl-dot { border-color: #fff !important; }
+  .tl-date { color: #00875a !important; }
+  .tl-date.yellow { color: #b37f00 !important; }
+  .tl-date.blue { color: #3b5bdb !important; }
+  .tl-title { color: #111 !important; }
+  .tl-desc { color: #3a6654 !important; }
+
+  /* Quiz blocks — show in print */
+  .quiz-block {
+    background: #f8f8f8 !important;
+    border: 1px solid #ccc !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .quiz-block::before { color: #b37f00 !important; }
+  .quiz-q { color: #111 !important; }
+  .quiz-opt {
+    background: #f0f0f0 !important;
+    border: 1px solid #ccc !important;
+    color: #111 !important;
+  }
+  .quiz-opt .opt-letter { background: #ddd !important; color: #333 !important; }
+  /* Hide any revealed feedback */
+  .quiz-feedback { display: none !important; }
+
+  /* Progress bar area — hide */
+  .progress-wrap { display: none !important; }
+
+  /* Score screen — hide in print */
+  .score-screen { display: none !important; }
+
+  .main { padding: 16px 24px 40px !important; }
+
+  /* Print cover info */
+  .hero-stats { display: flex !important; }
+
+  /* Clean section page breaks */
+  .section-header { page-break-after: avoid; }
+  .chat-label { page-break-after: avoid; }
+  .conversation { page-break-inside: auto; }
+  .msg { page-break-inside: avoid; }
+  .tl-item { page-break-inside: avoid; }
+  .tips-grid { page-break-inside: avoid; }
+
+  /* Print footer on each page */
+  @page {
+    margin: 1.5cm;
+    @bottom-center {
+      content: "PRESTO Transition Training Module — Frontline Staff | Page " counter(page) " of " counter(pages);
+      font-size: 9pt;
+      color: #888;
+    }
+  }
 }
 
 /* ════════════════════════════════════════
@@ -757,7 +891,7 @@ body {
 <!-- ── HERO ── -->
 <div class="hero" id="hero">
   <div class="hero-badge">Metrolinx · Frontline Staff Training</div>
-  <h1>PRESTO Transition:<br>Early Card Conversion<br>Communications Toolkit</h1>
+  <h1>PRESTO Transition<br>Training Module</h1>
   <p>An interactive conversation-based guide for frontline staff to confidently handle customer questions about the PRESTO system upgrade.</p>
   <div class="hero-stats">
     <div class="hero-stat"><div class="num">4</div><div class="label">Modules</div></div>
@@ -1331,7 +1465,10 @@ function toggleTheme() {
 
 // ── PRINT ──
 function printModule() {
-  window.print();
+  // Make ALL messages visible across all sections before printing
+  document.querySelectorAll('.msg').forEach(m => m.classList.add('visible'));
+  // Small delay to let any pending transitions finish, then print
+  setTimeout(() => window.print(), 300);
 }
 
 // ── NAVIGATION ──
