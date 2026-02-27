@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRESTO Training Module – Frontline Staff</title>
+<title>PRESTO Training – Early Card Conversion communications Toolkit</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 /* ════════════════════════════════════════
@@ -891,7 +891,7 @@ body {
 <!-- ── HERO ── -->
 <div class="hero" id="hero">
   <div class="hero-badge">Metrolinx · Frontline Staff Training</div>
-  <h1>PRESTO Transition<br>Training Module</h1>
+  <h1>PRESTO Transition:<br>Early Card Conversion<br>Communications Toolkit</h1>
   <p>An interactive conversation-based guide for frontline staff to confidently handle customer questions about the PRESTO system upgrade.</p>
   <div class="hero-stats">
     <div class="hero-stat"><div class="num">4</div><div class="label">Modules</div></div>
@@ -913,7 +913,7 @@ body {
 <div class="print-btn-wrap">
   <button class="print-btn" onclick="printModule()">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 8H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3zm-3 11H8v-5h8v5zm3-7a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm-1-9H6v4h12V3z"/></svg>
-    Print / Save PDF
+    Print / Save All Modules as PDF
   </button>
 </div>
 
@@ -1422,7 +1422,7 @@ body {
   <div class="score-badges" id="scoreBadges"></div>
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
     <button class="btn-secondary" onclick="restartAll()">🔄 Restart Training</button>
-    <button class="btn-primary" onclick="printModule()">🖨️ Print Summary</button>
+    <button class="btn-primary" onclick="printModule()">🖨️ Print All Modules as PDF</button>
   </div>
 </div>
 
@@ -1465,10 +1465,33 @@ function toggleTheme() {
 
 // ── PRINT ──
 function printModule() {
-  // Make ALL messages visible across all sections before printing
+  // 1. Make ALL messages visible across every section
   document.querySelectorAll('.msg').forEach(m => m.classList.add('visible'));
-  // Small delay to let any pending transitions finish, then print
-  setTimeout(() => window.print(), 300);
+
+  // 2. Temporarily force ALL sections to display (override active-only logic)
+  document.querySelectorAll('.section').forEach(s => {
+    s.style.display = 'block';
+    s.style.animation = 'none';
+    s.style.opacity = '1';
+    s.style.transform = 'none';
+  });
+
+  // 3. Short delay so browser renders everything, then print
+  setTimeout(() => {
+    window.print();
+
+    // 4. After print dialog closes, restore only the current active section
+    setTimeout(() => {
+      document.querySelectorAll('.section').forEach(s => {
+        s.style.display = '';
+        s.style.animation = '';
+        s.style.opacity = '';
+        s.style.transform = '';
+      });
+      // Re-activate the correct section
+      document.getElementById('s' + currentSection).style.display = 'block';
+    }, 500);
+  }, 400);
 }
 
 // ── NAVIGATION ──
